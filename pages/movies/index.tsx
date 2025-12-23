@@ -45,7 +45,9 @@ const Movies: React.FC<MProps> = () => {
 
 
   useEffect(() => {
-    fetchMovies()
+    void (async () => {
+      await fetchMovies();
+    })();
   }, [fetchMovies])
 
 
