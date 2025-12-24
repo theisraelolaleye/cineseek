@@ -45,9 +45,15 @@ const Movies: React.FC<MProps> = () => {
 
 
   useEffect(() => {
-    void (async () => {
-      await fetchMovies();
-    })();
+    let cancelled = false;
+    Promise.resolve().then(() => {
+      if (!cancelled) {
+        void fetchMovies();
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [fetchMovies])
 
 
@@ -89,7 +95,7 @@ const Movies: React.FC<MProps> = () => {
         </div>
 
         {/* Movies output */}
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mt-10">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 mt-10">
           {
             movies?.map((movie: MoviesProps, key: number) => (
               <MovieCard
